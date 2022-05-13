@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, Text, Link as GeistLink, Button, Tooltip, Code } from "@geist-ui/core";
+import { Card, Text, Link as GeistLink, Button, Tooltip, Code, Tag, useTheme } from "@geist-ui/core";
 import { CheckInCircleFill, HeartFill } from "@geist-ui/icons";
 import { useEffect, useState } from "react";
 
@@ -13,6 +13,8 @@ export default function PostFeed({ posts, admin }) {
 
 function PostItem({ post, admin = false }) {
   const [verified, setVerifed] = useState(false);
+
+  const { palette } = useTheme()
 
   useEffect(() => {
       if (post.username === "jparw") {
@@ -61,15 +63,20 @@ function PostItem({ post, admin = false }) {
           <>
             <Link passHref href={`/admin/${post.slug}`}>
               <h3>
-                <Button type="success">Edit</Button>
+                <Button width="100%" type="success">Edit</Button>
               </h3>
             </Link>
 
+            <div className='flex space-x-1'>
+            <Text p>
+              Status:
+            </Text>
             {post.published ? (
-              <p className="text-success">Live</p>
+              <Text style={{color: palette.cyan}}>published</Text>
             ) : (
               <Text type="warning">Unpublished</Text>
             )}
+            </div>
           </>
         )}
       </Card>

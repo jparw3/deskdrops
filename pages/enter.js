@@ -94,6 +94,7 @@ function UsernameForm() {
       username: formValue,
       photoURL: user.photoURL,
       displayName: user.displayName,
+      verified: false
     });
     batch.set(usernameDoc, { uid: user.uid });
 

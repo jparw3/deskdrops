@@ -53,9 +53,9 @@ function PostList() {
   const posts = querySnapshot?.docs.map((doc) => doc.data());
 
   return (
-    <Grid.Container mt="100px" width="100%" gap={2} justify="center">
+    <div className='grid mt-40 gap-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1'>
       <PostFeed posts={posts} admin />
-    </Grid.Container>
+    </div>
   );
 }
 
