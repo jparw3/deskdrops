@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card, Text, Link as GeistLink, Button, Tooltip, Code, Tag, useTheme } from "@geist-ui/core";
 import { HeartFill } from "@geist-ui/icons";
-
+import {useState, useEffect} from 'react'
 export default function PostFeed({ posts, admin }) {
   return posts
     ? posts.map((post) => (
@@ -11,8 +11,23 @@ export default function PostFeed({ posts, admin }) {
 }
 
 function PostItem({ post, admin = false }) {
-
+  const [heartEmoji, setHeartEmoji] = useState('🤍')
   const { palette } = useTheme()
+
+  useEffect(() => {
+    if(post.heartCount <= 10){
+      setHeartEmoji('❤️')
+    }else if(post.heartCount <= 20){
+      setHeartEmoji('💖')
+    }else if(post.heartCount <= 35){
+      setHeartEmoji('💓')
+    }else if(post.heartCount <= 75){
+      setHeartEmoji('💘')
+    }else if(post.heartCount <= 100){
+      setHeartEmoji('💛')
+    }
+  }, [])
+  
 
   return (
         <Link passHref href={`/${post.username}/${post.slug}`}>
@@ -27,11 +42,9 @@ function PostItem({ post, admin = false }) {
           </Link>
         </Text>
 
-        <div className="flex space-x-1 items-center">
-          <div className="text-[#888]">
-            <HeartFill size={16} />
-          </div>
-          <Text style={{ color: "#888" }}>{post.heartCount || 0} Hearts</Text>
+        <div className="flex w-full justify-end space-x-1 items-center">
+          <Text style={{ color: "#888" }}>{heartEmoji}</Text>
+          <heartIcon/>
         </div>
 
         {/* If admin view, show extra controls for user */}
@@ -59,3 +72,4 @@ function PostItem({ post, admin = false }) {
       </Link>
   );
 }
+

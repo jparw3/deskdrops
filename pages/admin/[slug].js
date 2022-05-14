@@ -45,8 +45,6 @@ function PostManager() {
     .doc(slug);
   const [post] = useDocumentDataOnce(postRef);
 
-  
-
   return (
     <div className="max-w-[980px] mx-auto mt-[100px] flex justify-center items-center ">
       <div className="w-full mx-3">

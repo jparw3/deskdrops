@@ -7,7 +7,7 @@ import { UserContext } from "@lib/context";
 
 import NextLink from "next/link";
 import { useDocumentData } from "react-firebase-hooks/firestore";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { Card, Button, Text } from "@geist-ui/core";
 import { firestore, getUserWithUsername, postToJSON } from "../../lib/firebase";
@@ -61,6 +61,22 @@ export default function Post(props) {
 
   const { user: currentUser } = useContext(UserContext);
 
+  const [heartEmoji, setHeartEmoji] = useState('🤍')
+
+  useEffect(() => {
+    if(post.heartCount <= 10){
+      setHeartEmoji('❤️')
+    }else if(post.heartCount <= 20){
+      setHeartEmoji('💖')
+    }else if(post.heartCount <= 35){
+      setHeartEmoji('💓')
+    }else if(post.heartCount <= 75){
+      setHeartEmoji('💘')
+    }else if(post.heartCount <= 100){
+      setHeartEmoji('💛')
+    }
+  }, [])
+
   return (
     <div className="max-w-[980px] mx-auto flex flex-col justify-center mt-[75px] align-items">
       <Metatags
@@ -74,7 +90,7 @@ export default function Post(props) {
         </section>
         <Card.Footer>
           <div className="flex space-x-2 flex-col w-full">
-            <Text p>{post.heartCount || 0} 🤍</Text>
+            <Text p>{heartEmoji}</Text>
 
             <div className="flex justify-between w-full">
               <AuthCheck
