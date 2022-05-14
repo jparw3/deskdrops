@@ -5,10 +5,18 @@ import AuthCheck from "@components/AuthCheck";
 import { firestore, auth, serverTimestamp } from "@lib/firebase";
 // import ImageUploader from "@components/ImageUploader";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
-import { Tag, Textarea, Card, Button, useToasts, useMediaQuery } from "@geist-ui/core";
+import {
+  Tag,
+  Textarea,
+  Card,
+  Button,
+  useToasts,
+  useMediaQuery,
+  Text,
+} from "@geist-ui/core";
 
 import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import { useForm } from "react-hook-form";
@@ -37,15 +45,18 @@ function PostManager() {
     .doc(slug);
   const [post] = useDocumentDataOnce(postRef);
 
+  
+
   return (
     <div className="max-w-[980px] mx-auto mt-[100px] flex justify-center items-center ">
       <div className="w-full mx-3">
         {post && (
           <>
             <section>
-              <div className='text-2xl md:text-4xl pb-4'>{post.title}</div>
-              <Tag mb={2} type="lite">ID: {post.slug}</Tag>
-
+              <div className="text-2xl md:text-4xl pb-4">{post.title}</div>
+              <Tag mb={2} type="lite">
+                ID: {post.slug}
+              </Tag>
               <PostForm
                 postRef={postRef}
                 defaultValues={post}
@@ -55,16 +66,15 @@ function PostManager() {
 
             <aside>
               <div className="flex w-full justify-between">
-                  <Button auto onClick={() => setPreview(!preview)}>
-                    {preview ? "Edit" : "Preview"}
-                  </Button>
+                <Button auto onClick={() => setPreview(!preview)}>
+                  {preview ? "Edit" : "Preview"}
+                </Button>
                 <DeletePostButton postRef={postRef} />
               </div>
             </aside>
           </>
         )}
-
-        </div>
+      </div>
     </div>
   );
 }
@@ -77,7 +87,7 @@ function PostForm({ defaultValues, postRef, preview }) {
 
   const { isValid, isDirty } = formState;
   const { setToast } = useToasts();
-  const upMD = useMediaQuery('md', { match: 'up' })
+  const upMD = useMediaQuery("md", { match: "up" });
 
   const updatePost = async ({ content, published }) => {
     await postRef.update({
@@ -120,15 +130,22 @@ function PostForm({ defaultValues, postRef, preview }) {
         <div className="flex w-full justify-between items-center mt-5">
           <fieldset>
             <input name="published" type="checkbox" ref={register} />
-            <label>&nbsp;Post Privately</label>
+            <label>&nbsp;Post Publically</label>
           </fieldset>
 
           <button type="submit">
-            {upMD ? 
+            {upMD ? (
               <Button auto type="secondary" disabled={!isValid || !isDirty}>
-              Save Changes
-            </Button> : <Button auto iconRight={<Save/>} type="secondary" disabled={!isValid || !isDirty}/>
-            }
+                Save Changes
+              </Button>
+            ) : (
+              <Button
+                auto
+                iconRight={<Save />}
+                type="secondary"
+                disabled={!isValid || !isDirty}
+              />
+            )}
           </button>
         </div>
       </div>
@@ -139,7 +156,7 @@ function PostForm({ defaultValues, postRef, preview }) {
 function DeletePostButton({ postRef }) {
   const router = useRouter();
   const { setToast } = useToasts();
-  const upMD = useMediaQuery('md', { match: 'up' })
+  const upMD = useMediaQuery("md", { match: "up" });
   const deletePost = async () => {
     const doIt = confirm("are you sure!");
     if (doIt) {
@@ -149,15 +166,15 @@ function DeletePostButton({ postRef }) {
     }
   };
 
-  if(upMD){
+  if (upMD) {
     return (
       <Button type="error" onClick={deletePost}>
         Delete
       </Button>
-      )
-  }else{
+    );
+  } else {
     return (
-      <Button iconRight={<Trash/>} auto type="error" onClick={deletePost}/>
-    )
+      <Button iconRight={<Trash />} auto type="error" onClick={deletePost} />
+    );
   }
 }

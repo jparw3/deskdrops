@@ -1,13 +1,16 @@
 /* eslint-disable no-return-assign */
 /* eslint-disable prettier/prettier */
 /* eslint-disable @next/next/no-img-element */
-import { Link, Text, Spacer, Tooltip, Code } from "@geist-ui/core";
+import { Link, Text, Spacer, Code } from "@geist-ui/core";
 import { CheckInCircleFill } from "@geist-ui/icons";
-import { useState, useEffect } from "react";
-import { firestore, auth, serverTimestamp } from "@lib/firebase";
+
+
+
+
 
 // UI component for user profile
-export default function UserProfile({ user }) {
+export default function UserProfile({user, verified}) {
+
   return (
     <div className="mt-[100px] -space-y-1 flex max-w-[980px] mx-auto justify-center items-center flex-col">
       <img
@@ -21,13 +24,15 @@ export default function UserProfile({ user }) {
       </div>
       <Text h3>
         <div className="flex items-center space-x-2">
-          <div>{user.displayName || "Anonymous User"}</div>{" "}
+          <div>{user.displayName || "Anonymous User"}</div>
+          {verified && <CheckInCircleFill/>}
         </div>
       </Text>
+      <Text mt={2}>{user.bio}</Text>
       <Link block color>
         @{user.username}{" "}
       </Link>
-      <Text>{user.bio}</Text>
+      <Text>{user.uid}</Text>
     </div>
   );
 }

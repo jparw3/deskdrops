@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Card, Text, Link as GeistLink, Button, Tooltip, Code, Tag, useTheme } from "@geist-ui/core";
-import { CheckInCircleFill, HeartFill } from "@geist-ui/icons";
-import { useEffect, useState } from "react";
+import { HeartFill } from "@geist-ui/icons";
 
 export default function PostFeed({ posts, admin }) {
   return posts
@@ -12,22 +11,9 @@ export default function PostFeed({ posts, admin }) {
 }
 
 function PostItem({ post, admin = false }) {
-  const [verified, setVerifed] = useState(false);
 
   const { palette } = useTheme()
 
-  useEffect(() => {
-      if (post.username === "jparw") {
-        setVerifed(true);
-      } else if (post.username === "khaye") {
-        setVerifed(true);
-      } else if (post.username === "deskdrops") {
-        setDislayName("Official DeskDrops Account");
-        setVerifed(true);
-      } else {
-        setVerifed(false);
-      }
-    }, []);
   return (
         <Link passHref href={`/${post.username}/${post.slug}`}>
       <Card className='cursor-pointer' hoverable width="100%">
@@ -36,17 +22,7 @@ function PostItem({ post, admin = false }) {
           Posted by{" "}
           <Link passHref href={`/${post.username}`}>
             <GeistLink block color underline>
-              <div>@{post.username} {verified && (
-            <Tooltip
-              text={
-                <>
-                  <Code>{post.username}</Code> is a verified user.
-                </>
-              }
-            >
-              <CheckInCircleFill size={14} />
-            </Tooltip>
-          )}</div>
+              <div>@{post.username}</div>
             </GeistLink>
           </Link>
         </Text>
